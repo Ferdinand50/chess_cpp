@@ -113,7 +113,7 @@ void Screen::draw_board(){
 
 
 
-void Screen::draw_pieces(){
+void Screen::draw_pieces(string board_state){
 
     int imgFlags = IMG_INIT_PNG;
     if( !( IMG_Init( imgFlags ) & imgFlags ) )
@@ -127,7 +127,7 @@ void Screen::draw_pieces(){
     rect.h = SCREEN_WIDTH/8;
 
     // chess board annotation (black top):
-    string board_state = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+    // string board_state = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
 
     map<char, int> chartoint = {
         {'r',0},
@@ -174,9 +174,9 @@ void Screen::draw_pieces(){
 }
 
 
-void Screen::update(){
+void Screen::update(string board){
     draw_board();
-    draw_pieces();
+    draw_pieces(board);
 
 }
 

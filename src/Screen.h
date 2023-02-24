@@ -22,9 +22,9 @@ private:
 public:
     Screen();
     bool init();
-    void update();
+    void update(string board);
     void draw_board();
-    void draw_pieces();
+    void draw_pieces(string board_state);
     bool processEvents();
     void close();
 };
