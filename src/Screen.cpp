@@ -72,37 +72,7 @@ bool Screen::init(){
     return true;
 }
 
-bool Screen::processEvents(){
-    SDL_Event e;
-    int xMouse;
-    int yMouse;
-    int square = SCREEN_WIDTH/8;
 
-    
-
-    while(SDL_PollEvent(&e)){
-        switch(e.type){
-            case SDL_QUIT:
-                return false;
-            case SDL_MOUSEBUTTONDOWN:
-                SDL_GetMouseState(&xMouse,&yMouse);
-                if(m_second_click){                           
-                    m_current_click[0]= xMouse/square;
-                    m_current_click[1]= yMouse/square;
-                    m_second_click = false;
-                }           
-                else{
-                    m_second_click=true;
-                    m_previous_click[0]= xMouse/square;
-                    m_previous_click[1]= yMouse/square;
-                }
-                cout<<m_current_click[1]<<endl;
-                break;
-
-        }
-    }
-    return true;
-}
 
 
 void Screen::draw_board(){
