@@ -6,7 +6,7 @@ namespace caveofprogramming{
 
 
 Screen::Screen() :
-    m_window(NULL),m_renderer(NULL),m_texture(NULL),m_buffer(NULL),m_images{NULL}{
+    m_current_click{NULL},m_previous_click{NULL}, m_second_click(false),m_window(NULL),m_renderer(NULL),m_texture(NULL),m_buffer(NULL),m_images{NULL}{
 }
 
 bool Screen::init(){
@@ -73,11 +73,32 @@ bool Screen::init(){
 }
 
 bool Screen::processEvents(){
-    SDL_Event event;
+    SDL_Event e;
+    int xMouse;
+    int yMouse;
+    int square = SCREEN_WIDTH/8;
 
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            return false;
+    
+
+    while(SDL_PollEvent(&e)){
+        switch(e.type){
+            case SDL_QUIT:
+                return false;
+            case SDL_MOUSEBUTTONDOWN:
+                SDL_GetMouseState(&xMouse,&yMouse);
+                if(m_second_click){                           
+                    m_current_click[0]= xMouse/square;
+                    m_current_click[1]= yMouse/square;
+                    m_second_click = false;
+                }           
+                else{
+                    m_second_click=true;
+                    m_previous_click[0]= xMouse/square;
+                    m_previous_click[1]= yMouse/square;
+                }
+                cout<<m_current_click[1]<<endl;
+                break;
+
         }
     }
     return true;
@@ -85,30 +106,21 @@ bool Screen::processEvents(){
 
 
 void Screen::draw_board(){
-    //draw white board as foundation
-    memset(m_buffer, 50, SCREEN_WIDTH*SCREEN_WIDTH*sizeof(Uint32));
 
-	SDL_UpdateTexture(m_texture, NULL, m_buffer, SCREEN_WIDTH*sizeof(Uint32));
-	SDL_RenderClear(m_renderer);
-	SDL_RenderCopy(m_renderer,m_texture,NULL,NULL);
-	SDL_RenderPresent(m_renderer);
-
-    SDL_Rect rect;
-    rect.w = SCREEN_WIDTH/8;
-    rect.h = SCREEN_WIDTH/8;
-
-    int startPos = 0;
-    for(int y=0; y<8;y++){
-        for (int x = startPos; x<8; x+=2){
-            rect.x = x*SCREEN_WIDTH/8;
-            rect.y = y*SCREEN_WIDTH/8;
-            SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
-            SDL_RenderFillRect(m_renderer,&rect);
-        }
-        startPos = 1- startPos;    
+int startPos = 0;
+for (int y = 0; y < 8; y++) {       
+    for (int x = startPos; x < 8; x+=2) {           
+            SDL_Rect rect;
+            rect.x = x * SCREEN_WIDTH/8;
+            rect.y = y * SCREEN_WIDTH/8;
+            rect.w = SCREEN_WIDTH/8;
+            rect.h = SCREEN_WIDTH/8;
+            SDL_SetRenderDrawColor(m_renderer, 50, 50, 50, 255);
+            SDL_RenderFillRect(m_renderer, &rect);              
     }
+    startPos = 1 - startPos;
+}
 
-    SDL_RenderPresent(m_renderer); 
 }
 
 

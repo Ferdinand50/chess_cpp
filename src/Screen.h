@@ -17,6 +17,9 @@ private:
     SDL_Texture *m_texture; 
     Uint32 *m_buffer; 
     SDL_Surface * m_images[12];
+    bool m_second_click;
+    int m_current_click[2];
+    int m_previous_click[2];
     
 
 public:

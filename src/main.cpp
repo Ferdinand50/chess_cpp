@@ -25,12 +25,16 @@ int main() {
 	board = gamestate.boardtoFEN();
 
 
-	screen.update(board);
+	
 	// TODO: event driven
 	while (true) {
+
+		screen.update(board);
 		if(screen.processEvents()==false){
 			break;
 		}
+		
+		SDL_Delay(floor(32.0f));
 	}
 
 	screen.close();
