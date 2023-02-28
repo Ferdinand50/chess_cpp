@@ -68,12 +68,20 @@ int main() {
 
 
 						// initialize move
-						Move move(gamestate, MoveSelected[0][0], MoveSelected[1][0], MoveSelected[0][1], MoveSelected[1][1]);
-						makeMove(gamestate, move);
+						Move move(gamestate.m_temp_board, MoveSelected[0][0], MoveSelected[1][0], MoveSelected[0][1], MoveSelected[1][1]);
+						makeMove(gamestate.m_temp_board, move);
+						cout<<endl;
 
-						
-
+						board = gamestate.boardtoFEN();
 						screen.update(board);
+						cout<<board<<endl;
+						int rows=8;
+						for (int i = 0; i < rows; i++) {
+							for (int j = 0; j < 8; j++) {
+								std::cout << gamestate.m_temp_board[i][j] << " ";
+							}
+							std::cout << std::endl;
+    }
 						
 					}
 

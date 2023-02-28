@@ -76,20 +76,25 @@ bool Screen::init(){
 
 
 void Screen::draw_board(){
-
-int startPos = 0;
-for (int y = 0; y < 8; y++) {       
-    for (int x = startPos; x < 8; x+=2) {           
-            SDL_Rect rect;
-            rect.x = x * SCREEN_WIDTH/8;
-            rect.y = y * SCREEN_WIDTH/8;
+    SDL_Rect rect;
+    bool toggle_color = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            rect.x = j * SCREEN_WIDTH/8;
+            rect.y = i * SCREEN_WIDTH/8;
             rect.w = SCREEN_WIDTH/8;
             rect.h = SCREEN_WIDTH/8;
-            SDL_SetRenderDrawColor(m_renderer, 50, 50, 50, 255);
-            SDL_RenderFillRect(m_renderer, &rect);              
+            if (toggle_color)
+                SDL_SetRenderDrawColor(m_renderer, 50, 50, 50, 255);
+            else
+                SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
+            SDL_RenderFillRect(m_renderer, &rect);
+            if(j != 7) //needed for chess color pattern
+            toggle_color = !toggle_color;
+        }
     }
-    startPos = 1 - startPos;
-}
 
 }
 

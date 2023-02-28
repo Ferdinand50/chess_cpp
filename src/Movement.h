@@ -10,8 +10,8 @@ namespace caveofprogramming {
 class Move{
 public:
     // rewrite piece type into bit
-    char m_pieceMoved;
-    char m_pieceTaken;
+    char *m_pieceMoved;
+    char *m_pieceTaken;
     int m_row_start;
     int m_row_end;
     int m_columm_start;
@@ -22,12 +22,12 @@ private:
     
 
 public:
-    Move(Gamestate gamestate, int row_start, int row_end, int columm_start, int columm_end);
+    Move(char *board[8][8], int row_start, int row_end, int columm_start, int columm_end);
     void close();
 };
 
 
-void makeMove(Gamestate gamestate, Move move);
+void makeMove(char *board[8][8], Move move);
 
 }
 

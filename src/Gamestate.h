@@ -9,7 +9,7 @@ namespace caveofprogramming {
 class Gamestate {
 public:
     unsigned long long m_bitmap[12];
-    char m_temp_board[8][8];
+    char *m_temp_board[8][8];
 private:
     
     
