@@ -25,9 +25,9 @@ private:
 public:
     Screen();
     bool init();
-    void update(string board);
+    void update(unsigned long long bitboards[12]);
     void draw_board();
-    void draw_pieces(string board_state);
+    void draw_bitboard_pieces(unsigned long long bitboards[12]);
     bool processEvents();
     void close();
 };
