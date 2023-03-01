@@ -1,9 +1,8 @@
 #include "Screen.h"
+#include "Gamestate.h"
 #include <map>
 
 namespace caveofprogramming{
-
-
 
 Screen::Screen() :
     m_current_click{NULL},m_previous_click{NULL}, m_second_click(false),m_window(NULL),m_renderer(NULL),m_texture(NULL),m_buffer(NULL),m_images{NULL}{
@@ -73,8 +72,6 @@ bool Screen::init(){
 }
 
 
-
-
 void Screen::draw_board(){
     SDL_Rect rect;
     bool toggle_color = 0;
@@ -95,75 +92,37 @@ void Screen::draw_board(){
             toggle_color = !toggle_color;
         }
     }
-
 }
 
 
 
-void Screen::draw_pieces(string board_state){
-
-    int imgFlags = IMG_INIT_PNG;
-    if( !( IMG_Init( imgFlags ) & imgFlags ) )
-    {
-        printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
-        
-    }
-
+void Screen::draw_bitboard_pieces(unsigned long long bitboards[12]){
+    //init rect
     SDL_Rect rect;
     rect.w = SCREEN_WIDTH/8;
     rect.h = SCREEN_WIDTH/8;
-
-    // chess board annotation (black top):
-    // string board_state = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
-
-    map<char, int> chartoint = {
-        {'r',0},
-        {'n',1},
-        {'b',2},
-        {'q',3},
-        {'k',4},
-        {'p',5},
-        {'R',6},
-        {'N',7},
-        {'B',8},
-        {'Q',9},
-        {'K',10},
-        {'P',11}
-    };
-
-    int columm = 0;
-    int row = 0;
-    char local_char;
-    int local_char_int;
-    for(size_t i = 0; i<board_state.length();i++){
-        local_char = board_state[i];
-        if(local_char=='/'){
-            columm = columm + 1;
-            row = 0;
+    //iterate over bitboards
+    for(int i=0; i<12;i++){
+        for(int rank=0; rank<8;rank++){
+            for(int file=0; file<8;file++){
+                int square=rank*8 +file;
+                if(get_bit(bitboards[i],square)){
+                    rect.x = file*SCREEN_WIDTH/8;
+                    rect.y = rank*SCREEN_WIDTH/8;
+                    m_texture = SDL_CreateTextureFromSurface(m_renderer, m_images[i]);
+                    SDL_RenderCopy(m_renderer,m_texture,NULL,&rect);
+                        }
+            }    
         }
-        else if(isalpha(local_char)){
-            rect.x = row*SCREEN_WIDTH/8;
-            rect.y = columm*SCREEN_WIDTH/8;
-            row = row + 1;
-            m_texture = SDL_CreateTextureFromSurface(m_renderer, m_images[chartoint[board_state[i]]]);
-            SDL_RenderCopy(m_renderer,m_texture,NULL,&rect);
-        }
-        else if(isdigit(local_char)){
-            // -1 since rows start at 0
-            local_char_int = (int)local_char -48;
-            row = row + local_char_int;
-        }
-        else {
-            cout<<"error"<<endl;
-        }
-    }
+    }   
     SDL_RenderPresent(m_renderer); 
 }
 
 
-void Screen::update(string board){
+
+void Screen::update(unsigned long long bitboards[12]){
     draw_board();
-    draw_pieces(board);
+    draw_bitboard_pieces(bitboards);
 
 }
 
@@ -171,7 +130,6 @@ void Screen::close(){
 	delete [] m_buffer;
     	
     IMG_Quit();
-    // SDL_FreeSurface(m_image);
 	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyTexture(m_texture);
 	SDL_DestroyWindow(m_window);
