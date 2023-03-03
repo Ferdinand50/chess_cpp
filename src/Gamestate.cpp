@@ -4,15 +4,7 @@
 namespace caveofprogramming {
 
 Gamestate::Gamestate() :
-    m_temp_board       {{"r","n","b","q","k","b","n","r"},
-                        {"p","p","p","p","p","p","p","p"},
-                        {"e","e","e","e","e","e","e","e"},
-                        {"e","e","e","e","e","e","e","e"},
-                        {"e","e","e","e","e","e","e","e"},
-                        {"e","e","e","e","e","e","e","e"},
-                        {"P","P","P","P","P","P","P","P"},
-                        {"R","N","B","Q","K","B","N","R"}} ,m_bitboards{NULL}, 
-    m_test_bitboard(0ULL), m_pawn_attacks{NULL}{
+    m_pawn_attacks{NULL},m_bitboards{NULL}{
 }
 
 // "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
@@ -67,82 +59,26 @@ bool Gamestate::init(){
     return true;
 }
 
-string Gamestate::boardtoFEN(){
-    string FEN ="";
-    int number_counter = 0;
-    for(int i=0; i<8; i++){
-        for(int j=0; j<8;j++){
-           if(*m_temp_board[i][j]=='e'){
-            number_counter = number_counter + 1;
-            if(number_counter>0){
-                FEN.push_back(char(number_counter+48));
-            }
-           }
-
-           else{
-            FEN.push_back(*m_temp_board[i][j]);
-            number_counter = 0;
-           }
-        }
-        if(i<7){
-            FEN.push_back('/');
-        }
-        number_counter = 0;
-    }
-    bool previous_number = false;
-    for(int i=0; i<FEN.length();i++){
-        if(isdigit(FEN[i])){
-            if(previous_number==true){
-                previous_number = true;
-                 FEN.erase(i-1, 1);
-                 i = i-1;
-            }
-            else {
-                previous_number = true;
-            }
-        }
-        else{
-            previous_number = false;
-        }
-    }
-    return FEN;
-}
-
-
-string Gamestate::bitboardtoFEN(){
-    string FEN ="";
-
-    return FEN;
-}
-
 
  
-
-
-
-void Gamestate::printBitboard(unsigned long long bitboard[12]){
+void Gamestate::printBitboard(unsigned long long bitboard){
     printf("\n");
+    for(int rank=0; rank<8;rank++){
+        for(int file=0; file<8;file++){
+            int square=rank*8 +file;
+            if(!file)
+                printf("  %d", 8-rank);
 
-    for(int i=0; i<12;i++){
-        for(int rank=0; rank<8;rank++){
-            for(int file=0; file<8;file++){
-                int square=rank*8 +file;
-
-                if(!file)
-                    printf("  %d", 8-rank);
-
-                // print bit state either 1 or 0
-                printf(" %d", get_bit(bitboard[i],square)?1:0);
-                
-            }
-            printf("\n");
-            
+            // print bit state either 1 or 0
+            printf(" %d", get_bit(bitboard,square)?1:0);
         }
-        // print board files
-        printf("\n    a b c d e f g h\n\n");
-        //print bitboard as unsigned decial number
-        printf("    Bitboard: %llud\n", bitboard);
-    }   
+        printf("\n");
+    }
+    // print board files
+    printf("\n    a b c d e f g h\n\n");
+    //print bitboard as unsigned decial number
+    printf("    Bitboard: %llud\n", bitboard);
+       
 }
 
 

@@ -69,8 +69,13 @@ int main() {
 
 
 						// initialize move
-						Move move(gamestate.m_temp_board, MoveSelected[0][0], MoveSelected[1][0], MoveSelected[0][1], MoveSelected[1][1]);
-						makeMove(gamestate.m_temp_board, move);
+						Move move(gamestate.m_bitboards, MoveSelected[0][0], MoveSelected[1][0], MoveSelected[0][1], MoveSelected[1][1]);
+						makeMove(gamestate.m_bitboards, move);
+
+						// gamestate.printBitboard(gamestate.m_bitboards[0]);
+						// cout<<"piece moved: " << move.m_pieceMoved<<endl;
+						// cout<<"piece taken: " << move.m_pieceTaken<<endl;
+						
 
 						screen.update(gamestate.m_bitboards);
 

@@ -8,7 +8,7 @@ namespace caveofprogramming {
 
 
 
-unsigned long long mask_pawn_attacks(int square, int side);
+// unsigned long long mask_pawn_attacks(int square, int side);
 
 
 

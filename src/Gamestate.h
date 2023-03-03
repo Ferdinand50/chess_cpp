@@ -9,8 +9,7 @@ namespace caveofprogramming {
 class Gamestate {
 public:
     unsigned long long m_bitboards[12];
-    unsigned long long m_test_bitboard;
-    char *m_temp_board[8][8];
+    unsigned long long test_bitboards[12];
     unsigned long long m_pawn_attacks[2][64];
 private:
     
@@ -19,10 +18,7 @@ private:
 public:
     Gamestate();
     bool init();
-    string boardtoFEN();
-    string bitboardtoFEN();
-    
-    void printBitboard(unsigned long long bitboard[12]);
+    void printBitboard(unsigned long long bitboard);
     void close();
 };
 

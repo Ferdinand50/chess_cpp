@@ -6,23 +6,23 @@ namespace caveofprogramming {
 
 
 
-unsigned long long mask_pawn_attacks(int square, int side){
+// unsigned long long mask_pawn_attacks(int square, int side){
 
-    unsigned long long attacks =0ULL;
-    unsigned long long bitboard =0ULL;
-    set_bit(bitboard,square);
+//     unsigned long long attacks =0ULL;
+//     unsigned long long bitboard =0ULL;
+//     set_bit(bitboard,square);
 
-    // white pawns
-    if(!side){
+//     // white pawns
+//     if(!side){
+//         attacks |= (bitboard <<7);
+//     }
+//     //black pawns
+//     else{
 
-    }
-    //black pawns
-    else{
+//     }
 
-    }
-
-    return attacks;
-}
+//     return attacks;
+// }
 
 
 }
