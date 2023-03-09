@@ -10,7 +10,11 @@ class Gamestate {
 public:
     unsigned long long m_bitboards[12];
     unsigned long long test_bitboards[12];
+    //[side(color)],[square]
     unsigned long long m_pawn_attacks[2][64];
+    unsigned long long m_knight_attacks[64];
+    unsigned long long m_king_attacks[64];
+    unsigned long long m_bishop_attacks[64];
 private:
     
     
@@ -18,7 +22,7 @@ private:
 public:
     Gamestate();
     bool init();
-    void printBitboard(unsigned long long bitboard);
+    void printBitboard(unsigned long long bitboard);    
     void close();
 };
 
@@ -40,6 +44,10 @@ enum {
     a2, b2, c2, d2, e2, f2, g2, h2,
     a1, b1, c1, d1, e1, f1, g1, h1
 };
+
+// white is 0, black is 1
+enum {white, black};
+
 
 }
 

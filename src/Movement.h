@@ -28,6 +28,11 @@ public:
 
 void makeMove(unsigned long long m_bitboards[12], Move move);
 
+unsigned long long mask_pawn_attacks(int square, int side);
+unsigned long long mask_knight_attacks(int square);
+unsigned long long mask_king_attacks(int square);
+unsigned long long mask_bishop_attacks(int square);
+
 }
 
 #endif

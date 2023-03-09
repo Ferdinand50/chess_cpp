@@ -35,21 +35,22 @@ int main() {
 	int columm;
 	SDL_Event e;
 
-	// gamestate.printBitboard(gamestate.m_bitboards);
 
 	screen.update(gamestate.m_bitboards);
+
+
+	// gamestate.printBitboard(test);
 
 	// game loop
 	bool QUIT = false;
 	while (!QUIT) {
 
-		
-		
 		while(SDL_PollEvent(&e)){
 			switch(e.type){
 				case SDL_QUIT:
 					QUIT=true;
 					break;
+				//move pieves via mouse clicks
 				case SDL_MOUSEBUTTONDOWN:
 					SDL_GetMouseState(&mx,&my);
 					row = mx/square;
@@ -59,7 +60,6 @@ int main() {
 						MoveSelected[0][1]= columm;
 						StartMove = false;
 						EndMove = true;
-						
 					}
 					else{
 						MoveSelected[1][0]= row;
@@ -67,21 +67,13 @@ int main() {
 						StartMove = true;
 						EndMove = false;
 
-
 						// initialize move
 						Move move(gamestate.m_bitboards, MoveSelected[0][0], MoveSelected[1][0], MoveSelected[0][1], MoveSelected[1][1]);
 						makeMove(gamestate.m_bitboards, move);
 
-						// gamestate.printBitboard(gamestate.m_bitboards[0]);
-						// cout<<"piece moved: " << move.m_pieceMoved<<endl;
-						// cout<<"piece taken: " << move.m_pieceTaken<<endl;
-						
-
+						//update screen
 						screen.update(gamestate.m_bitboards);
-
-						
 					}
-
 			}
 		}
 		

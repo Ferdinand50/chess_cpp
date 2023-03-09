@@ -84,6 +84,7 @@ void Gamestate::printBitboard(unsigned long long bitboard){
 
 
 
+
 void Gamestate::close(){
 
 }
