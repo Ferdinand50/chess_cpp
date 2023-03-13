@@ -126,6 +126,34 @@ void Screen::update(unsigned long long bitboards[12]){
 
 }
 
+
+void Screen::draw_hightlight(unsigned long long bitboards[12]){
+    
+    unsigned long long bitboard = 4ULL;
+
+    //init rect
+    SDL_Rect rect;
+    rect.w = SCREEN_WIDTH/8;
+    rect.h = SCREEN_WIDTH/8;
+    SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 100);
+    //iterate over bitboards
+    for(int rank=0; rank<8;rank++){
+        for(int file=0; file<8;file++){
+            int square=rank*8 +file;
+            if(get_bit(bitboard,square)){
+                rect.x = file*SCREEN_WIDTH/8;
+                rect.y = rank*SCREEN_WIDTH/8;
+                SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
+                SDL_RenderFillRect(m_renderer, &rect);
+            }
+
+        }    
+    } 
+    draw_bitboard_pieces(bitboards);
+    
+}
+
+
 void Screen::close(){
 	delete [] m_buffer;
     	

@@ -27,6 +27,7 @@ public:
     bool init();
     void update(unsigned long long bitboards[12]);
     void draw_board();
+    void draw_hightlight(unsigned long long bitboards[12]);
     void draw_bitboard_pieces(unsigned long long bitboards[12]);
     bool processEvents();
     void close();

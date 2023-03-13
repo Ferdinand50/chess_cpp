@@ -242,7 +242,20 @@ static inline int count_bits(unsigned long long bitboard){
     return count;
 }
 
+//return piece type in square
+int return_piece_type(int MoveSelected[2], unsigned long long bitboards[12]){
 
+    int square = MoveSelected[1]*8 +MoveSelected[0];
+    int piece_type;
+    for(int i=0; i<12;i++){
+        if(get_bit(bitboards[i],square)) {
+        piece_type = i;
+        break;
+        }
+    }
+
+    return piece_type;
+}
 
 // Move class 
 

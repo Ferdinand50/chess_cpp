@@ -36,6 +36,7 @@ unsigned long long mask_rook_attacks(int square);
 unsigned long long bishop_attacks_on_the_fly(int square, unsigned long long block);
 unsigned long long rook_attack_on_the_fly(int square, unsigned long long block);
 static inline int count_bits(unsigned long long bitboard);
+int return_piece_type(int MoveSelected[2], unsigned long long bitboard[12]);
 }
 
 #endif

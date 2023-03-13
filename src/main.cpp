@@ -8,7 +8,8 @@
 using namespace std;
 using namespace caveofprogramming;
 
-
+//bugs:
+//1.double click same piece removes both pieces
 int main() {
  
 	// initialization
@@ -60,6 +61,8 @@ int main() {
 						MoveSelected[0][1]= columm;
 						StartMove = false;
 						EndMove = true;
+						// screen.draw_hightlight(gamestate.m_bitboards[return_piece_type(MoveSelected[0], gamestate.m_bitboards)]);
+						screen.draw_hightlight(gamestate.m_bitboards);
 					}
 					else{
 						MoveSelected[1][0]= row;
