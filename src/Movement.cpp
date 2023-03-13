@@ -130,6 +130,121 @@ unsigned long long mask_bishop_attacks(int square){
     return attacks;
 }
 
+//generate bishop attacks on the fly 
+unsigned long long bishop_attacks_on_the_fly(int square, unsigned long long block){
+
+    unsigned long long attacks = 0ULL;
+
+    // init ranks and files
+    int r, f;
+
+    //init target rank and files
+    int tr = square/8;
+    int tf = square%8;
+
+    //generate bishop attacks, blocks for enemy pickes 
+    for(r=tr +1, f=tf+1; r<=6&&f<=7;r++,f++) {
+        attacks |=(1ULL<<(r*8+f));
+        if((1ULL<<(r*8+f)) & block) break;
+    }
+    for(r=tr -1, f=tf+1; r>=1&&f<=0;r--,f++) {
+        attacks |=(1ULL<<(r*8+f));
+        if((1ULL<<(r*8+f))& block) break;
+    }
+    for(r=tr +1, f=tf-1; r<=6&&f>=7;r++,f--) {
+        attacks |=(1ULL<<(r*8+f));
+        if((1ULL<<(r*8+f)) & block) break;
+    }
+    for(r=tr -1, f=tf-1; r>=1&&f>=0;r--,f--) {
+        attacks |=(1ULL<<(r*8+f));
+        if((1ULL<<(r*8+f)) & block) break;
+    }
+
+    return attacks;
+}
+
+unsigned long long mask_rook_attacks(int square){
+
+    unsigned long long attacks = 0ULL;
+
+    // init ranks and files
+    int r, f;
+
+    //init target rank and files
+    int tr = square/8;
+    int tf = square%8;
+
+    //mask relevant rook occupancy bits
+    //down
+    for(r=tr+1;r<=6;r++) attacks|=(1ULL << (r*8 + tf));
+    //up
+    for(r=tr-1;r>=6;r--) attacks|=(1ULL << (r*8 + tf));
+    //right
+    for(f=tf+1;f<=6;f++) attacks|=(1ULL << (tr*8 + f));
+    //left
+    for(f=tf-1;f>=6;f--) attacks|=(1ULL << (tr*8 + f));
+
+    return attacks;
+}
+//generate rook attacks on the fly
+unsigned long long rook_attack_on_the_fly(int square, unsigned long long block){
+
+    unsigned long long attacks = 0ULL;
+
+    // init ranks and files
+    int r, f;
+
+    //init target rank and files
+    int tr = square/8;
+    int tf = square%8;
+
+    //generate rook attacks
+    //down
+    for(r=tr+1;r<=7;r++) {
+        attacks|=(1ULL << (r*8 + tf));
+        if((1ULL << (r*8 + tf)) & block) break;
+    }
+    //up
+    for(r=tr-1;r>=0;r--) {
+        attacks|=(1ULL << (r*8 + tf));
+        if((1ULL << (r*8 + tf)) & block) break;
+    }
+    //right
+    for(f=tf+1;f<=7;f++) {
+        attacks|=(1ULL << (tr*8 + f));
+        if((1ULL << (tr*8 + f)) & block) break;
+    }
+    //left
+    for(f=tf-1;f>=0;f--) {
+        attacks|=(1ULL << (tr*8 + f));
+        if((1ULL << (tr*8 + f)) & block) break;
+    }
+
+    return attacks;
+}
+
+//helper functions
+
+//count bits within a bitboard
+static inline int count_bits(unsigned long long bitboard){
+
+    //bit counter
+    int count = 0;
+
+    // consecutively reset least significant 1st bit
+    while(bitboard){
+        count ++;
+        //reset least significant 1st bit
+        bitboard &= bitboard-1;
+    }
+
+    //return bit count
+    return count;
+}
+
+
+
+// Move class 
 
 // 0r 1n 2b 3q 4k 5p 6R 7N 8B 9Q 10K 11P 
 Move::Move(unsigned long long m_bitboards[12], int row_start, int row_end, int columm_start, int columm_end){

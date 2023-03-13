@@ -32,7 +32,10 @@ unsigned long long mask_pawn_attacks(int square, int side);
 unsigned long long mask_knight_attacks(int square);
 unsigned long long mask_king_attacks(int square);
 unsigned long long mask_bishop_attacks(int square);
-
+unsigned long long mask_rook_attacks(int square);
+unsigned long long bishop_attacks_on_the_fly(int square, unsigned long long block);
+unsigned long long rook_attack_on_the_fly(int square, unsigned long long block);
+static inline int count_bits(unsigned long long bitboard);
 }
 
 #endif
