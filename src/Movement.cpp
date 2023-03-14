@@ -8,6 +8,29 @@ const unsigned long long not_h_file = 9187201950435737471ULL;
 const unsigned long long not_hg_file = 4557430888798830399ULL;
 const unsigned long long not_ab_file = 18229723555195321596ULL;
 
+//relevent occupancy bit count for every square on board
+const int bishop_releveant_bits[64]=  {
+    6, 5, 5, 5, 5, 5, 5, 6,
+    5, 5, 5, 5, 5, 5, 5, 5,
+    5, 5, 7, 7, 7, 7, 5, 5,
+    5, 5, 7, 9, 9, 7, 5, 5,
+    5, 5, 7, 9, 9, 7, 5, 5,
+    5, 5, 7, 7, 7, 7, 5, 5,
+    5, 5, 5, 5, 5, 5, 5, 5,
+    6, 5, 5, 5, 5, 5, 5, 6
+};
+
+const int rook_releveant_bits[64]=  {
+    12, 11, 11, 11, 11, 11, 11, 12,
+    11, 10, 10, 10, 10, 10, 10, 11,
+    11, 10, 10, 10, 10, 10, 10, 11,
+    11, 10, 10, 10, 10, 10, 10, 11,
+    11, 10, 10, 10, 10, 10, 10, 11,
+    11, 10, 10, 10, 10, 10, 10, 11,
+    11, 10, 10, 10, 10, 10, 10, 11,
+    12, 11, 11, 11, 11, 11, 11, 12
+};
+
 
 // use pointer
 void makeMove(unsigned long long m_bitboards[12], Move move){
@@ -240,6 +263,64 @@ static inline int count_bits(unsigned long long bitboard){
 
     //return bit count
     return count;
+}
+
+//get least significant 1st bit indexx
+static inline int get_ls1b_index(unsigned long long bitboard){
+    // make sure bitbord is not zero
+    if(bitboard){
+        //count trailing bits before LS1B
+        return count_bits((bitboard & bitboard)-1);
+    }
+    else{
+        //return illegal index
+        return -1;
+    }
+}
+
+//set occupancies
+unsigned long long set_occupancy(int index, int bits_in_mask, unsigned long long attack_mask){
+
+    // occupancy mask
+    unsigned long long occupancy = 0ULL;
+
+    //loop over the range of the bits within attack mask
+    for(int count = 0; count < bits_in_mask; count++){
+
+        //get LS1B index of attacks mask
+        int square = get_ls1b_index(attack_mask);
+
+        //pop LS1B in attack map
+        pop_bit(attack_mask, square);
+
+        //make sure occupancy is on board
+        if(index & (1<<count)){
+            //populate occupancy mask
+            occupancy |= (1ULL << square);
+        }
+    }
+
+    return occupancy;
+}
+
+unsigned int state = 1804289383;
+
+// generate 32-bit pseudo legal number
+unsigned int get_random_number(){
+    // get current state
+    unsigned int number = state;
+
+    // XOR shift algorithm
+    number ^= number << 13;
+    number ^= number >> 17;
+    number ^= number << 5;
+
+    //update random number state
+    state = number;
+
+    // return random number
+    return number;
+
 }
 
 //return piece type in square
