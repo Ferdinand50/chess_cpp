@@ -210,7 +210,7 @@ unsigned long long mask_rook_attacks(int square){
     return attacks;
 }
 //generate rook attacks on the fly
-unsigned long long rook_attack_on_the_fly(int square, unsigned long long block){
+unsigned long long rook_attacks_on_the_fly(int square, unsigned long long block){
 
     unsigned long long attacks = 0ULL;
 
@@ -303,12 +303,12 @@ unsigned long long set_occupancy(int index, int bits_in_mask, unsigned long long
     return occupancy;
 }
 
-unsigned int state = 1804289383;
+unsigned int random_state = 1804289383;
 
 // generate 32-bit pseudo legal number
-unsigned int get_random_number(){
+unsigned int get_random_U32_number(){
     // get current state
-    unsigned int number = state;
+    unsigned int number = random_state;
 
     // XOR shift algorithm
     number ^= number << 13;
@@ -316,11 +316,33 @@ unsigned int get_random_number(){
     number ^= number << 5;
 
     //update random number state
-    state = number;
+    random_state = number;
 
     // return random number
     return number;
 
+}
+
+// generate 64-bit pseudo legal numbers
+unsigned long long get_random_U64_number(){
+
+    //define 4 random numbers
+    unsigned long long n1, n2, n3, n4;
+
+    //init random numbers slicing 16 bits from the MS1B side
+    n1 = (unsigned long long)(get_random_U32_number()) & 0xFFFF;
+    n2 = (unsigned long long)(get_random_U32_number()) & 0xFFFF;
+    n3 = (unsigned long long)(get_random_U32_number()) & 0xFFFF;
+    n4 = (unsigned long long)(get_random_U32_number()) & 0xFFFF;
+
+    //return random number
+    return n1 | (n2<<16) | (n3<<32) | (n4<<48);
+
+}
+
+//generate magic number candidate
+unsigned long long generate_magic_number(){
+    return get_random_U64_number() & get_random_U64_number() & get_random_U64_number();
 }
 
 //return piece type in square
@@ -337,6 +359,60 @@ int return_piece_type(int MoveSelected[2], unsigned long long bitboards[12]){
 
     return piece_type;
 }
+
+/*************************************************************\
+ =============================================================
+
+                             Magics
+
+ =============================================================
+\*************************************************************/
+
+// find appropriate magic number
+unsigned long long find_magic_number(int square, int relevant_bits, int bishop){
+
+    //unit occupancies
+    unsigned long long occupancies[4096];
+
+    // init attack tables
+    unsigned long long attacks[4096];
+
+    // init used attacks
+    unsigned long long used_attacks[4096];
+
+    // init attack mask for a current piece
+    unsigned long long attack_mask = bishop ? mask_bishop_attacks(square) : mask_rook_attacks(square);
+
+    //init occupancy indicies
+    int occupancy_indicies = 1 << relevant_bits;
+
+    //loop over occupancy indicies
+    for(int index = 0; index<occupancy_indicies; index++){
+
+        // init occupanies
+        occupancies[index]= set_occupancy(index, relevant_bits, attack_mask);
+
+        //init attacks
+        attacks[index] = bishop ? bishop_attacks_on_the_fly(square, occupancies[index]) :
+                            rook_attacks_on_the_fly(square, occupancies[index]);
+    }
+
+    // test magic number loop
+    for(int random_count = 0; random_count<100000000; random_count++){
+
+        //generate magic number candidate
+        unsigned long long magic_number = generate_magic_number();
+
+        //skip inappropriate magic numbers
+        if(count_bits((attack_mask*magic_number)&0xFF00000000000000)<6) continue;
+
+    }
+
+}
+
+
+
+
 
 // Move class 
 

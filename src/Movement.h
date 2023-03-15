@@ -34,12 +34,15 @@ unsigned long long mask_king_attacks(int square);
 unsigned long long mask_bishop_attacks(int square);
 unsigned long long mask_rook_attacks(int square);
 unsigned long long bishop_attacks_on_the_fly(int square, unsigned long long block);
-unsigned long long rook_attack_on_the_fly(int square, unsigned long long block);
+unsigned long long rook_attacks_on_the_fly(int square, unsigned long long block);
 static inline int count_bits(unsigned long long bitboard);
 static inline int get_ls1b_index(unsigned long long bitboard);
 int return_piece_type(int MoveSelected[2], unsigned long long bitboard[12]);
 unsigned long long set_occupancy(int index, int bits_in_mask, unsigned long long attack_mask);
-unsigned int get_random_number();
+unsigned int get_random_U32_number();
+unsigned long long get_random_U64_number();
+unsigned long long generate_magic_number();
+
 }
 
 #endif
