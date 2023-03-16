@@ -2,7 +2,9 @@
 #define Movement_H_
 
 #include <iostream>
+#include <string.h>
 #include "Gamestate.h"
+
 using namespace std;
 
 namespace caveofprogramming {
@@ -42,6 +44,7 @@ unsigned long long set_occupancy(int index, int bits_in_mask, unsigned long long
 unsigned int get_random_U32_number();
 unsigned long long get_random_U64_number();
 unsigned long long generate_magic_number();
+void init_magic_numbers();
 
 }
 

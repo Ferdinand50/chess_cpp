@@ -11,7 +11,7 @@ using namespace caveofprogramming;
 //bugs:
 //1.double click same piece removes both pieces
 int main() {
- 
+	init_magic_numbers();
 	// initialization
 	Screen screen;
 	if(screen.init()==false){
