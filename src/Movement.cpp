@@ -508,6 +508,14 @@ int return_piece_type(int MoveSelected[2], unsigned long long bitboards[12]){
     return piece_type;
 }
 
+void init_all(){
+
+    // init_leapers_attacks();
+
+    // init_magic_numbers();
+}
+
+
 /*************************************************************\
  =============================================================
 
